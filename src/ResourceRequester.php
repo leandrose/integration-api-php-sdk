@@ -34,9 +34,9 @@ class ResourceRequester
     }
 
     /**
-     * @param string $method   HTTP Method.
+     * @param string $method HTTP Method.
      * @param string $endpoint Relative to API base path.
-     * @param array  $options  Options for the request.
+     * @param array $options Options for the request.
      *
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -65,6 +65,9 @@ class ResourceRequester
         $this->lastResponse = $response;
 
         $content = $response->getBody()->getContents();
+        if (empty($content)) {
+            return null;
+        }
 
         $decoded = json_decode($content);
         $data = $decoded;
