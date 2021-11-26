@@ -8,7 +8,6 @@ use TamoJuno\Config;
 
 class Client extends Guzzle
 {
-
     public function __construct(array $config = [])
     {
         try {
@@ -27,15 +26,14 @@ class Client extends Guzzle
         parent::__construct($config);
     }
 
-    private function generateAuthenticationCurl():?string
+    private function generateAuthenticationCurl(): ?string
     {
-
         $curl = curl_init();
 
         $credentials = base64_encode(Config::getClientId() . ":" . Config::getClientSecret());
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://sandbox.boletobancario.com/authorization-server/oauth/token',
+            CURLOPT_URL => Config::getAuthUrl(),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -45,7 +43,7 @@ class Client extends Guzzle
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => "grant_type=client_credentials",
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Basic '. $credentials,
+                'Authorization: Basic ' . $credentials,
                 'Content-Type: application/x-www-form-urlencoded'
             ),
         ));
